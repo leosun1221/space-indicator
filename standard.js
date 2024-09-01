@@ -110,8 +110,8 @@ class SpaceIndicator {
     // Apply space indicators to all elements on the page
     applyIndicators() {
         this.clearIndicators();
-        const allElements = document.querySelectorAll('*:not(.not-calculate)');
-
+        const allElements = document.querySelectorAll('body *:not(.not-calculate)');
+        
         allElements.forEach((element) => {
             const computedStyle = window.getComputedStyle(element);
 
@@ -133,7 +133,7 @@ class SpaceIndicator {
             }
 
             // Apply font size indicator if font size is toggled on and element has text content
-            if (this.showFontSize && this.hasTextContent(element)) {
+            if (this.showFontSize && this.grabPureTextContent(element)) {
                 this.addFontSizeIndicator(element, computedStyle);
             }
         });
@@ -256,6 +256,7 @@ class SpaceIndicator {
     }
 
     // Add font size indicator for elements with text content
+
     addFontSizeIndicator(element, computedStyle) {
         const fontSize = computedStyle.fontSize;
         const fontSizeIndicator = document.createElement('div');
@@ -269,6 +270,17 @@ class SpaceIndicator {
     // Check if an element contains text content
     hasTextContent(element) {
         return element.textContent.trim().length > 0;
+    }
+    grabPureTextContent(element){
+        console.log("element.childNodes : ", element, element.childNodes)
+        let hasContent = false;
+        for (childText of element.childNodes) {
+            console.log("childText : ", childText, childText.constructor,childText.constructor.name)
+            if (childText.constructor.name == 'Text') {
+                hasContent = true;
+            }
+        }
+        return hasContent;
     }
 }
 

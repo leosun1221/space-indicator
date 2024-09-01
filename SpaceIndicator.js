@@ -20,8 +20,8 @@ const SpaceIndicator = () => {
 
     const applyIndicators = () => {
         clearIndicators();
-        const allElements = document.querySelectorAll('*:not(.not-calculate)');
-
+        const allElements = document.querySelectorAll('body *:not(.not-calculate)');
+        console.log("allElements :", allElements);
         allElements.forEach((element) => {
             const computedStyle = window.getComputedStyle(element);
 
@@ -38,7 +38,7 @@ const SpaceIndicator = () => {
                 addPaddingIndicators(element, rect, computedStyle);
             }
 
-            if (showFontSize && hasTextContent(element)) {
+            if (showFontSize && grabPureTextContent(element)) {
                 addFontSizeIndicator(element, computedStyle);
             }
         });
@@ -168,6 +168,17 @@ const SpaceIndicator = () => {
     const hasTextContent = (element) => {
         return element.textContent.trim().length > 0;
     };
+    const grabPureTextContent = (element) => {
+        console.log("element.childNodes : ", element, element.childNodes)
+        let hasContent = false;
+        for (childText of element.childNodes) {
+            console.log("childText : ", childText, childText.constructor,childText.constructor.name)
+            if (childText.constructor.name == 'Text') {
+                hasContent = true;
+            }
+        }
+        return hasContent;
+    }
 
     return (
         <div className="button-container not-calculate">
