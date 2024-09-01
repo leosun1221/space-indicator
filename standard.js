@@ -70,7 +70,7 @@ class SpaceIndicator {
     // Create toggle buttons
     createToggleButtons() {
         const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'button-container';
+        buttonContainer.className = 'button-container not-calculate';
 
         const toggleFontSizeButton = this.createButton('Toggle Font Size', () => {
             this.showFontSize = !this.showFontSize;
@@ -96,7 +96,7 @@ class SpaceIndicator {
     // Create a single button with text and click handler
     createButton(text, onClick) {
         const button = document.createElement('button');
-        button.className = 'toggle-button';
+        button.className = 'toggle-button not-calculate';
         button.innerText = text;
         button.addEventListener('click', onClick);
         return button;
@@ -110,7 +110,7 @@ class SpaceIndicator {
     // Apply space indicators to all elements on the page
     applyIndicators() {
         this.clearIndicators();
-        const allElements = document.querySelectorAll('*:not(.toggle-button)');
+        const allElements = document.querySelectorAll('*:not(.not-calculate)');
 
         allElements.forEach((element) => {
             const computedStyle = window.getComputedStyle(element);

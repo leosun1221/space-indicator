@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './SpaceIndicator.css'; // Import CSS file for styles
+import './SpaceIndicator.css'; // Ensure you have this CSS file or use a CSS-in-JS solution
 
 const SpaceIndicator = () => {
     const [showFontSize, setShowFontSize] = useState(false);
@@ -8,18 +8,26 @@ const SpaceIndicator = () => {
 
     useEffect(() => {
         applyIndicators();
+
+        return () => {
+            clearIndicators();
+        };
     }, [showFontSize, showSpacing, showPadding]);
 
-    const applyIndicators = () => {
-        const elements = document.querySelectorAll('*:not(.toggle-button)');
+    const clearIndicators = () => {
+        document.querySelectorAll('.space-indicator, .font-size-indicator').forEach(el => el.remove());
+    };
 
-        elements.forEach((element) => {
+    const applyIndicators = () => {
+        clearIndicators();
+        const allElements = document.querySelectorAll('*:not(.not-calculate)');
+
+        allElements.forEach((element) => {
             const computedStyle = window.getComputedStyle(element);
-            const rect = element.getBoundingClientRect();
 
             if (computedStyle.display === 'none' || computedStyle.visibility === 'hidden') return;
 
-            clearIndicators(element);
+            const rect = element.getBoundingClientRect();
 
             if (showSpacing) {
                 addMarginIndicators(element, rect, computedStyle);
@@ -36,20 +44,115 @@ const SpaceIndicator = () => {
         });
     };
 
-    const clearIndicators = (element) => {
-        element.querySelectorAll('.space-indicator, .font-size-indicator').forEach(el => el.remove());
-    };
-
     const addMarginIndicators = (element, rect, computedStyle) => {
-        // Add margin indicators logic here (similar to the original code)
+        const margins = ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'];
+        const marginColors = ['rgba(0, 0, 255, 0.3)', 'rgba(0, 255, 0, 0.3)', 'rgba(255, 0, 0, 0.3)', 'rgba(255, 255, 0, 0.3)'];
+
+        margins.forEach((margin, index) => {
+            const value = parseInt(computedStyle[margin], 10);
+            if (value > 0) {
+                const indicator = document.createElement('div');
+                indicator.className = 'space-indicator';
+                indicator.style.backgroundColor = marginColors[index];
+
+                if (index === 0) { // Top margin
+                    indicator.style.top = `${rect.top - value}px`;
+                    indicator.style.left = `${rect.left}px`;
+                    indicator.style.width = `${rect.width}px`;
+                    indicator.style.height = `${value}px`;
+                } else if (index === 1) { // Right margin
+                    indicator.style.top = `${rect.top}px`;
+                    indicator.style.left = `${rect.right}px`;
+                    indicator.style.width = `${value}px`;
+                    indicator.style.height = `${rect.height}px`;
+                } else if (index === 2) { // Bottom margin
+                    indicator.style.top = `${rect.bottom}px`;
+                    indicator.style.left = `${rect.left}px`;
+                    indicator.style.width = `${rect.width}px`;
+                    indicator.style.height = `${value}px`;
+                } else if (index === 3) { // Left margin
+                    indicator.style.top = `${rect.top}px`;
+                    indicator.style.left = `${rect.left - value}px`;
+                    indicator.style.width = `${value}px`;
+                    indicator.style.height = `${rect.height}px`;
+                }
+
+                indicator.innerText = `${value}px`;
+                document.body.appendChild(indicator);
+            }
+        });
     };
 
     const addPaddingIndicators = (element, rect, computedStyle) => {
-        // Add padding indicators logic here (similar to the original code)
+        const paddings = ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'];
+
+        paddings.forEach((padding, index) => {
+            const value = parseInt(computedStyle[padding], 10);
+            if (value > 0) {
+                const indicator = document.createElement('div');
+                indicator.className = 'space-indicator';
+
+                if (index === 0) { // Top padding
+                    indicator.style.top = `${rect.top}px`;
+                    indicator.style.left = `${rect.left}px`;
+                    indicator.style.width = `${rect.width}px`;
+                    indicator.style.height = `${value}px`;
+                    indicator.style.borderBottom = '1px solid blue';
+                } else if (index === 1) { // Right padding
+                    indicator.style.top = `${rect.top}px`;
+                    indicator.style.left = `${rect.right - value}px`;
+                    indicator.style.width = `${value}px`;
+                    indicator.style.height = `${rect.height}px`;
+                    indicator.style.borderLeft = '1px solid blue';
+                } else if (index === 2) { // Bottom padding
+                    indicator.style.top = `${rect.bottom - value}px`;
+                    indicator.style.left = `${rect.left}px`;
+                    indicator.style.width = `${rect.width}px`;
+                    indicator.style.height = `${value}px`;
+                    indicator.style.borderTop = '1px solid blue';
+                } else if (index === 3) { // Left padding
+                    indicator.style.top = `${rect.top}px`;
+                    indicator.style.left = `${rect.left}px`;
+                    indicator.style.width = `${value}px`;
+                    indicator.style.height = `${rect.height}px`;
+                    indicator.style.borderRight = '1px solid blue';
+                }
+
+                indicator.innerText = `${value}px`;
+                document.body.appendChild(indicator);
+            }
+        });
     };
 
     const addSpaceBetweenElements = (element, rect) => {
-        // Add space between elements logic here (similar to the original code)
+        const nextElement = element.nextElementSibling;
+        if (nextElement) {
+            const nextRect = nextElement.getBoundingClientRect();
+
+            if (nextRect.top > rect.bottom) {
+                const verticalSpace = nextRect.top - rect.bottom;
+                const indicator = document.createElement('div');
+                indicator.className = 'space-indicator';
+                indicator.style.top = `${rect.bottom}px`;
+                indicator.style.left = `${rect.left}px`;
+                indicator.style.width = `${rect.width}px`;
+                indicator.style.height = `${verticalSpace}px`;
+                indicator.innerText = `${verticalSpace}px`;
+                document.body.appendChild(indicator);
+            }
+
+            if (nextRect.left > rect.right) {
+                const horizontalSpace = nextRect.left - rect.right;
+                const indicator = document.createElement('div');
+                indicator.className = 'space-indicator';
+                indicator.style.top = `${rect.top}px`;
+                indicator.style.left = `${rect.right}px`;
+                indicator.style.width = `${horizontalSpace}px`;
+                indicator.style.height = `${rect.height}px`;
+                indicator.innerText = `${horizontalSpace}px`;
+                document.body.appendChild(indicator);
+            }
+        }
     };
 
     const addFontSizeIndicator = (element, computedStyle) => {
@@ -57,6 +160,7 @@ const SpaceIndicator = () => {
         const fontSizeIndicator = document.createElement('div');
         fontSizeIndicator.className = 'font-size-indicator';
         fontSizeIndicator.innerText = `${fontSize}`;
+
         element.style.position = 'relative';
         element.appendChild(fontSizeIndicator);
     };
@@ -66,14 +170,14 @@ const SpaceIndicator = () => {
     };
 
     return (
-        <div className="button-container">
-            <button className="toggle-button" onClick={() => setShowFontSize(!showFontSize)}>
+        <div className="button-container not-calculate">
+            <button className="toggle-button not-calculate" onClick={() => setShowFontSize(!showFontSize)}>
                 Toggle Font Size
             </button>
-            <button className="toggle-button" onClick={() => setShowSpacing(!showSpacing)}>
+            <button className="toggle-button not-calculate" onClick={() => setShowSpacing(!showSpacing)}>
                 Toggle Spacing
             </button>
-            <button className="toggle-button" onClick={() => setShowPadding(!showPadding)}>
+            <button className="toggle-button not-calculate" onClick={() => setShowPadding(!showPadding)}>
                 Toggle Padding
             </button>
         </div>
