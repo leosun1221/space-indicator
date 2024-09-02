@@ -133,7 +133,7 @@ class SpaceIndicator {
             }
 
             // Apply font size indicator if font size is toggled on and element has text content
-            if (this.showFontSize && this.hasTextContent(element)) {
+            if (this.showFontSize && this.grabPureTextContent(element)) {
                 this.addFontSizeIndicator(element, computedStyle);
             }
         });
