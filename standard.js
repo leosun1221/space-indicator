@@ -45,7 +45,7 @@ class SpaceIndicator {
             }
             .dimension-indicator:hover {
                 font-size: 16px;
-                background-color: rgba(255, 255, 255, 0.9); /* Slightly change the background for visibility */
+                background-color: rgba(255, 255, 0, 0.8);
             }
             .toggle-button {
                 position: sticky;
