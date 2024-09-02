@@ -58,10 +58,11 @@ class SpaceIndicator {
             }
             .button-container {
                 position: fixed;
-                bottom: 20px;
+                top: 20px;
                 left: 20px;
                 display: flex;
                 flex-direction: column;
+                z-index: 99999;
             }
         `;
         document.head.appendChild(style);
