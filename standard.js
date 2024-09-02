@@ -274,10 +274,12 @@ class SpaceIndicator {
     grabPureTextContent(element){
         console.log("element.childNodes : ", element, element.childNodes)
         let hasContent = false;
-        for (childText of element.childNodes) {
-            console.log("childText : ", childText, childText.constructor,childText.constructor.name)
-            if (childText.constructor.name == 'Text') {
-                hasContent = true;
+        if(!!element.childNodes){
+            for (let childText of element.childNodes) {
+                console.log("childText : ", childText, childText.constructor,childText.constructor.name)
+                if (childText.constructor.name == 'Text') {
+                    hasContent = true;
+                }
             }
         }
         return hasContent;
