@@ -1,47 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import './SpaceIndicator.css'; // Ensure you have this CSS file or use a CSS-in-JS solution
+import './SpaceIndicator.css'; // Import the CSS file
 
 const SpaceIndicator = () => {
     const [showFontSize, setShowFontSize] = useState(false);
     const [showSpacing, setShowSpacing] = useState(false);
     const [showPadding, setShowPadding] = useState(false);
+    const [showDimensions, setShowDimensions] = useState(false);
 
     useEffect(() => {
+        // Apply indicators on component mount and state change
         applyIndicators();
-
-        return () => {
-            clearIndicators();
-        };
-    }, [showFontSize, showSpacing, showPadding]);
-
-    const clearIndicators = () => {
-        document.querySelectorAll('.space-indicator, .font-size-indicator').forEach(el => el.remove());
-    };
+    }, [showFontSize, showSpacing, showPadding, showDimensions]);
 
     const applyIndicators = () => {
         clearIndicators();
         const allElements = document.querySelectorAll('body *:not(.not-calculate)');
-        console.log("allElements :", allElements);
+
         allElements.forEach((element) => {
             const computedStyle = window.getComputedStyle(element);
 
+            // Skip invisible elements
             if (computedStyle.display === 'none' || computedStyle.visibility === 'hidden') return;
 
             const rect = element.getBoundingClientRect();
 
+            // Apply margin indicators if spacing is toggled on
             if (showSpacing) {
                 addMarginIndicators(element, rect, computedStyle);
                 addSpaceBetweenElements(element, rect);
             }
 
+            // Apply padding indicators if padding is toggled on
             if (showPadding) {
                 addPaddingIndicators(element, rect, computedStyle);
             }
 
-            if (showFontSize && grabPureTextContent(element)) {
+            // Apply font size indicator if font size is toggled on and element has text content
+            if (showFontSize && hasTextContent(element)) {
                 addFontSizeIndicator(element, computedStyle);
             }
+
+            // Apply dimension indicators if dimensions are toggled on
+            if (showDimensions) {
+                addDimensionIndicator(element, rect);
+            }
         });
+    };
+
+    const clearIndicators = () => {
+        document.querySelectorAll('.space-indicator, .font-size-indicator, .dimension-indicator').forEach(el => el.remove());
+        document.querySelectorAll('.element-outline').forEach(el => el.classList.remove('element-outline'));
     };
 
     const addMarginIndicators = (element, rect, computedStyle) => {
@@ -49,7 +57,7 @@ const SpaceIndicator = () => {
         const marginColors = ['rgba(0, 0, 255, 0.3)', 'rgba(0, 255, 0, 0.3)', 'rgba(255, 0, 0, 0.3)', 'rgba(255, 255, 0, 0.3)'];
 
         margins.forEach((margin, index) => {
-            const value = parseInt(computedStyle[margin], 10);
+            const value = Math.round(parseInt(computedStyle[margin], 10));
             if (value > 0) {
                 const indicator = document.createElement('div');
                 indicator.className = 'space-indicator';
@@ -87,7 +95,7 @@ const SpaceIndicator = () => {
         const paddings = ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'];
 
         paddings.forEach((padding, index) => {
-            const value = parseInt(computedStyle[padding], 10);
+            const value = Math.round(parseInt(computedStyle[padding], 10));
             if (value > 0) {
                 const indicator = document.createElement('div');
                 indicator.className = 'space-indicator';
@@ -129,8 +137,9 @@ const SpaceIndicator = () => {
         if (nextElement) {
             const nextRect = nextElement.getBoundingClientRect();
 
+            // Vertical space
             if (nextRect.top > rect.bottom) {
-                const verticalSpace = nextRect.top - rect.bottom;
+                const verticalSpace = Math.round(nextRect.top - rect.bottom);
                 const indicator = document.createElement('div');
                 indicator.className = 'space-indicator';
                 indicator.style.top = `${rect.bottom}px`;
@@ -141,8 +150,9 @@ const SpaceIndicator = () => {
                 document.body.appendChild(indicator);
             }
 
+            // Horizontal space
             if (nextRect.left > rect.right) {
-                const horizontalSpace = nextRect.left - rect.right;
+                const horizontalSpace = Math.round(nextRect.left - rect.right);
                 const indicator = document.createElement('div');
                 indicator.className = 'space-indicator';
                 indicator.style.top = `${rect.top}px`;
@@ -156,43 +166,59 @@ const SpaceIndicator = () => {
     };
 
     const addFontSizeIndicator = (element, computedStyle) => {
-        const fontSize = computedStyle.fontSize;
+        const fontSize = Math.round(parseFloat(computedStyle.fontSize));
         const fontSizeIndicator = document.createElement('div');
         fontSizeIndicator.className = 'font-size-indicator';
-        fontSizeIndicator.innerText = `${fontSize}`;
+        fontSizeIndicator.innerText = `${fontSize}px`;
 
         element.style.position = 'relative';
         element.appendChild(fontSizeIndicator);
     };
 
+    const addDimensionIndicator = (element, rect) => {
+        const width = Math.round(rect.width);
+        const height = Math.round(rect.height);
+
+        const dimensionIndicator = document.createElement('div');
+        dimensionIndicator.className = 'dimension-indicator';
+        dimensionIndicator.innerText = `${width}px x ${height}px`;
+        dimensionIndicator.style.top = `${rect.top}px`;
+        dimensionIndicator.style.left = `${rect.left}px`;
+        dimensionIndicator.style.width = `${width}px`;
+        dimensionIndicator.style.height = `${height}px`;
+
+        document.body.appendChild(dimensionIndicator);
+    };
+
     const hasTextContent = (element) => {
         return element.textContent.trim().length > 0;
     };
-    const grabPureTextContent = (element) => {
-        console.log("element.childNodes : ", element, element.childNodes)
-        let hasContent = false;
-        if(!!element.childNodes){
-            for (let childText of element.childNodes) {
-                console.log("childText : ", childText, childText.constructor,childText.constructor.name)
-                if (childText.constructor.name == 'Text') {
-                    hasContent = true;
-                }
-            }
-        }
-        
-        return hasContent;
-    }
 
     return (
         <div className="button-container not-calculate">
-            <button className="toggle-button not-calculate" onClick={() => setShowFontSize(!showFontSize)}>
+            <button
+                className={`toggle-button not-calculate ${showFontSize ? 'active' : ''}`}
+                onClick={() => setShowFontSize(prev => !prev)}
+            >
                 Toggle Font Size
             </button>
-            <button className="toggle-button not-calculate" onClick={() => setShowSpacing(!showSpacing)}>
+            <button
+                className={`toggle-button not-calculate ${showSpacing ? 'active' : ''}`}
+                onClick={() => setShowSpacing(prev => !prev)}
+            >
                 Toggle Spacing
             </button>
-            <button className="toggle-button not-calculate" onClick={() => setShowPadding(!showPadding)}>
+            <button
+                className={`toggle-button not-calculate ${showPadding ? 'active' : ''}`}
+                onClick={() => setShowPadding(prev => !prev)}
+            >
                 Toggle Padding
+            </button>
+            <button
+                className={`toggle-button not-calculate ${showDimensions ? 'active' : ''}`}
+                onClick={() => setShowDimensions(prev => !prev)}
+            >
+                Toggle Dimensions
             </button>
         </div>
     );

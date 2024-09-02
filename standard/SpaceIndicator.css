@@ -1,0 +1,62 @@
+/* SpaceIndicator.css */
+.space-indicator, .font-size-indicator, .dimension-indicator {
+    position: absolute;
+    background-color: rgba(255, 255, 0, 0.8); /* Yellow background for better visibility */
+    color: black; /* Black text color for contrast */
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    box-sizing: border-box;
+    border: 1px dashed red;
+    transition: transform 0.2s ease, font-size 0.2s ease;
+    white-space: nowrap;
+}
+.dimension-indicator {
+    background-color: transparent;
+    justify-content: right;
+}
+.space-indicator:hover, .font-size-indicator:hover {
+    transform: scale(2);
+    font-size: 16px;
+    z-index: 10000; /* Ensure the hovered element is on top */
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly change the background for visibility */
+}
+.dimension-indicator:hover {
+    font-size: 16px;
+    background-color: rgba(255, 255, 0, 0.8);
+}
+.toggle-button {
+    position: sticky;
+    bottom: 20px;
+    background-color: black;
+    color: white;
+    font-size: 14px;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    z-index: 10001;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    width: auto;
+    transition: background-color 0.3s;
+}
+.toggle-button.active {
+    background-color: green;
+}
+.button-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 99999;
+}
+.element-outline {
+    outline: 1px solid red;
+    position: relative;
+}
