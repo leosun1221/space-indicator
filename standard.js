@@ -31,6 +31,7 @@ class SpaceIndicator {
                 box-sizing: border-box;
                 border: 1px dashed red;
                 transition: transform 0.2s ease, font-size 0.2s ease;
+                white-space: nowrap;
             }
             .dimension-indicator {
                 background-color: transparent;
