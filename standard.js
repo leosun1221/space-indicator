@@ -16,54 +16,50 @@ class SpaceIndicator {
     addGlobalStyles() {
         const style = document.createElement('style');
         style.innerHTML = `
-            .space-indicator {
-                position: absolute;
-                background-color: rgba(255, 255, 0, 0.8); /* Yellow background for better visibility */
-                color: black; /* Black text color for contrast */
-                font-size: 10px;
-                font-weight: bold;
-                padding: 2px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 9999;
-                pointer-events: none;
-                box-sizing: border-box;
-                border: 1px dashed red;
-            }
-            .font-size-indicator {
-                position: absolute;
-                color: red;
-                font-size: 12px;
-                font-weight: bold;
-                z-index: 10000;
-                pointer-events: none;
-                background-color: rgba(255, 255, 255, 0.8); /* White background for better visibility */
-                padding: 2px 4px;
-            }
-            .toggle-button {
-                position: sticky ;
-                bottom: 20px;
-                background-color: black;
-                color: white;
-                font-size: 14px;
-                padding: 10px;
-                margin: 5px;
-                cursor: pointer;
-                z-index: 10001;
-                border: none;
-                border-radius: 5px;
-                display: inline-block;
-                width: auto;
-            }
-            .button-container {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                display: flex;
-                flex-direction: column;
-                z-index: 99999;
-            }
+           .space-indicator, .font-size-indicator {
+            position: absolute;
+            background-color: rgba(255, 255, 0, 0.8); /* Yellow background for better visibility */
+            color: black; /* Black text color for contrast */
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            box-sizing: border-box;
+            border: 1px dashed red;
+            transition: transform 0.2s ease, font-size 0.2s ease;
+        }
+        .space-indicator:hover, .font-size-indicator:hover {
+            transform: scale(2);
+            font-size: 16px;
+            z-index: 10000; /* Ensure the hovered element is on top */
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly change the background for visibility */
+        }
+        .toggle-button {
+            position: sticky;
+            bottom: 20px;
+            background-color: black;
+            color: white;
+            font-size: 14px;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            z-index: 10001;
+            border: none;
+            border-radius: 5px;
+            display: inline-block;
+            width: auto;
+        }
+        .button-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 99999;
+        }
         `;
         document.head.appendChild(style);
     }
@@ -112,7 +108,7 @@ class SpaceIndicator {
     applyIndicators() {
         this.clearIndicators();
         const allElements = document.querySelectorAll('body *:not(.not-calculate)');
-        
+
         allElements.forEach((element) => {
             const computedStyle = window.getComputedStyle(element);
 
@@ -144,7 +140,7 @@ class SpaceIndicator {
     addMarginIndicators(element, rect, computedStyle) {
         const margins = ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'];
         const marginColors = ['rgba(0, 0, 255, 0.3)', 'rgba(0, 255, 0, 0.3)', 'rgba(255, 0, 0, 0.3)', 'rgba(255, 255, 0, 0.3)'];
-        
+
         margins.forEach((margin, index) => {
             const value = parseInt(computedStyle[margin], 10);
             if (value > 0) {
@@ -183,7 +179,7 @@ class SpaceIndicator {
     // Add padding indicators
     addPaddingIndicators(element, rect, computedStyle) {
         const paddings = ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'];
-        
+
         paddings.forEach((padding, index) => {
             const value = parseInt(computedStyle[padding], 10);
             if (value > 0) {
@@ -272,12 +268,12 @@ class SpaceIndicator {
     hasTextContent(element) {
         return element.textContent.trim().length > 0;
     }
-    grabPureTextContent(element){
+    grabPureTextContent(element) {
         console.log("element.childNodes : ", element, element.childNodes)
         let hasContent = false;
-        if(!!element.childNodes){
+        if (!!element.childNodes) {
             for (let childText of element.childNodes) {
-                console.log("childText : ", childText, childText.constructor,childText.constructor.name)
+                console.log("childText : ", childText, childText.constructor, childText.constructor.name)
                 if (childText.constructor.name == 'Text') {
                     hasContent = true;
                 }

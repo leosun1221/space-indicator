@@ -1,7 +1,7 @@
-.space-indicator {
+.space-indicator, .font-size-indicator {
     position: absolute;
-    background-color: rgba(255, 255, 0, 0.8);
-    color: black;
+    background-color: rgba(255, 255, 0, 0.8); /* Yellow background for better visibility */
+    color: black; /* Black text color for contrast */
     font-size: 10px;
     font-weight: bold;
     padding: 2px;
@@ -9,22 +9,16 @@
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    pointer-events: none;
     box-sizing: border-box;
     border: 1px dashed red;
+    transition: transform 0.2s ease, font-size 0.2s ease;
 }
-
-.font-size-indicator {
-    position: absolute;
-    color: red;
-    font-size: 12px;
-    font-weight: bold;
-    z-index: 10000;
-    pointer-events: none;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 2px 4px;
+.space-indicator:hover, .font-size-indicator:hover {
+    transform: scale(2);
+    font-size: 16px;
+    z-index: 10000; /* Ensure the hovered element is on top */
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly change the background for visibility */
 }
-
 .toggle-button {
     position: sticky;
     bottom: 20px;
@@ -40,7 +34,6 @@
     display: inline-block;
     width: auto;
 }
-
 .button-container {
     position: fixed;
     top: 20px;
