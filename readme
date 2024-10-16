@@ -1,0 +1,5 @@
+Managing and tracking the Feature WOF (Weight of Features) for our web projects has traditionally involved manually updating Excel sheets, which was both time-consuming and difficult to maintain. To streamline this process, we are introducing an automated solution that integrates directly into our ADO (Azure DevOps) build pipeline.
+
+With this new implementation, a custom NPM package will be triggered automatically during the build process whenever a web feature project is pushed. This package will collect the necessary Feature WOF data and seamlessly send it to Kibana Elastic for better tracking, visualization, and management.
+
+This approach eliminates the need for manual updates, ensures data accuracy, and provides real-time insights into feature performance through Kibana's powerful analytics tools.
