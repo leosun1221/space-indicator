@@ -10,3 +10,7 @@ json
   "overpass": "no"
 }
 This ensures that key details, like squad ownership and accessibility ratings, are properly documented in the package.json file. By combining automatic and manual assessments, this approach provides a more efficient and accurate way to track WOF data while reducing the burden on developers.
+
+
+
+replace(replace(replace(<your string>, '\r\n', ''), '\n', ''), '\r', '')
