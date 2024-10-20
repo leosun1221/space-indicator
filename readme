@@ -1,1 +1,12 @@
-Our ADO (Azure DevOps) build pipeline has already been upgraded to support both Node.js 14 and Node.js 18, ensuring compatibility across these versions. Since the process of sending WOF data is integrated into the build pipeline, it's essential to ensure the YAML configuration files are updated accordingly to reflect this compatibility. This will guarantee that the feature WOF implementation runs smoothly across the supported Node.js environments, maintaining consistency and performance in the build process.
+We have introduced a new WOF configuration within the package.json file to streamline the assessment process. Some aspects of the assessment are automatically populated behind the scenes, such as the package automatically detecting the React version or the component library, removing the need for manual input by the developer.
+
+However, certain assessments still require manual input from developers. For example, developers will need to add entries in the following format:
+
+json
+复制代码
+"wof": {
+  "squad": "name",
+  "accessibilityRating": "Not rated",
+  "overpass": "no"
+}
+This ensures that key details, like squad ownership and accessibility ratings, are properly documented in the package.json file. By combining automatic and manual assessments, this approach provides a more efficient and accurate way to track WOF data while reducing the burden on developers.
