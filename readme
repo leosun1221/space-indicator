@@ -13,4 +13,4 @@ This ensures that key details, like squad ownership and accessibility ratings, a
 
 
 
-replace(replace(replace(<your string>, '\r\n', ''), '\n', ''), '\r', '')
+trim(replace(replace(replace(replace(<your string>, '\r\n', ' '), '\n', ' '), '\r', ' '), '\t', ' '))
