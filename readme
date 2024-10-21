@@ -1,7 +1,10 @@
-We have introduced a new pull request (PR) template, currently implemented in the simple.demo project and integrated into our feature webx CLI project. For new projects, this PR template will be included automatically. However, for existing projects, the template needs to be added manually, as it is now a required part of the WOF assessment.
+We have introduced a new pull request (PR) validation step, requiring the inclusion of a work item URL in the PR description. This validation ensures that all pull requests reference a related work item, maintaining traceability and accountability.
 
-To add the PR template to your existing project, you have two options:
+As part of the build validation process, this new step ensures that only the necessary criteria are validated. The essential validation steps now include:
 
-Manually copy the template folder from the simple.demo project.
-Use the webx CLI command line tool. Please follow the instructions in the webx project documentation (a link will be provided).
-Ensuring that the pull request template is integrated across all projects helps maintain consistent WOF evaluations and ensures adherence to the updated standards.
+npm ci – for installing dependencies.
+npm run audit – to check for vulnerabilities.
+npm run build – to compile and build the project.
+npm test – to run unit tests.
+PR description validation – to verify the presence of a work item in the PR description.
+By adding this new validation step, we ensure that the PR build validation process remains streamlined while enforcing critical checks to maintain code quality and process compliance.
