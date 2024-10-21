@@ -1,7 +1,5 @@
-We have introduced streamlined pull request (PR) validation steps to ensure the build validation process focuses only on the essential items. The key validation steps now include:
+Given that our company's Elastic data retention is limited to two months, we are exploring an alternative solution for long-term storage of our WOF data by utilizing SharePoint. Our plan is to create a SharePoint list page specifically for managing and storing Feature WOF information.
 
-npm ci – for installing project dependencies.
-npm run audit – to identify and address security vulnerabilities.
-npm run build – to compile and build the project.
-npm test – to execute unit tests and verify code functionality.
-By refining these steps, we ensure the PR validation build runs efficiently, validating only the necessary components to maintain project quality and minimize overhead.
+To make this work, we will trigger an email from Kibana that sends the Feature WOF data to our chapter's email. Using Power Automate, we will create a flow that triggers when the email is received. This flow will extract the WOF information from the email and automatically update the corresponding SharePoint list.
+
+Additionally, we can extend this process by posting the WOF data to a Microsoft Teams channel or sending group messages, ensuring that all relevant teams are informed and the data is readily accessible. This approach ensures efficient data management and collaboration, while providing a reliable backup outside of Elastic’s limited retention window.
