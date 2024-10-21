@@ -1,10 +1,6 @@
-We have introduced a new pull request (PR) validation step, requiring the inclusion of a work item URL in the PR description. This validation ensures that all pull requests reference a related work item, maintaining traceability and accountability.
+We are planning to implement a WOF scoring system that will assess each feature based on its WOF configuration data. The scoring will classify features into three levels:
 
-As part of the build validation process, this new step ensures that only the necessary criteria are validated. The essential validation steps now include:
-
-npm ci – for installing dependencies.
-npm run audit – to check for vulnerabilities.
-npm run build – to compile and build the project.
-npm test – to run unit tests.
-PR description validation – to verify the presence of a work item in the PR description.
-By adding this new validation step, we ensure that the PR build validation process remains streamlined while enforcing critical checks to maintain code quality and process compliance.
+Green – indicating optimal or excellent performance.
+Amber – signifying areas that need attention but are within acceptable limits.
+Red – highlighting critical issues that require immediate action.
+This rating system will provide clear, actionable insights into the health of each feature, making it easier to prioritize improvements and maintain overall project quality.
