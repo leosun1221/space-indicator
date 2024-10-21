@@ -81,6 +81,42 @@ class SpaceIndicator {
         `;
         document.head.appendChild(style);
     }
+    addIndicatorStyles(doc) {
+        const style = doc.createElement('style');
+        style.innerHTML = `
+             .space-indicator, .font-size-indicator, .dimension-indicator {
+                position: absolute;
+                background-color: rgba(255, 255, 0, 0.8); /* Yellow background for better visibility */
+                color: black; /* Black text color for contrast */
+                font-size: 10px;
+                font-weight: bold;
+                padding: 2px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                box-sizing: border-box;
+                border: 1px dashed red;
+                transition: transform 0.2s ease, font-size 0.2s ease;
+                white-space: nowrap;
+            }
+            .dimension-indicator {
+                background-color: transparent;
+                justify-content: right;
+            }
+            .space-indicator:hover, .font-size-indicator:hover {
+                transform: scale(2);
+                font-size: 16px;
+                z-index: 10000; /* Ensure the hovered element is on top */
+                background-color: rgba(255, 255, 255, 0.9); /* Slightly change the background for visibility */
+            }
+            .dimension-indicator:hover {
+                font-size: 16px;
+                background-color: rgba(255, 255, 0, 0.8);
+            }
+        `;
+        doc.head.appendChild(style);
+    }
 
     // Create toggle buttons
     createToggleButtons() {
@@ -137,15 +173,40 @@ class SpaceIndicator {
     }
 
     // Clear existing indicators before applying new ones
-    clearIndicators() {
-        document.querySelectorAll('.space-indicator, .font-size-indicator, .dimension-indicator').forEach(el => el.remove());
-        document.querySelectorAll('.element-outline').forEach(el => el.classList.remove('element-outline'));
+    clearIndicators(doc) {
+        console.log("doc : ", doc);
+        doc.querySelectorAll('.space-indicator, .font-size-indicator, .dimension-indicator').forEach(el => el.remove());
+        doc.querySelectorAll('.element-outline').forEach(el => el.classList.remove('element-outline'));
+    }
+
+    applyIndicators() {
+       
+        const iframes = document.querySelectorAll('#default-feature iframe');
+        console.log("iframes : ", iframes.length)
+        if(iframes.length > 0){
+            iframes.forEach((iframe) => {
+                try {
+                    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                    if (iframeDocument) {
+                        this.clearIndicators(document);
+                        this.clearIndicators(iframeDocument);
+                        this.applyToDocument(iframeDocument);
+                    }
+                } catch (e) {
+                    console.warn('Cannot access iframe content due to cross-origin restrictions.');
+                }
+            });
+        } else {
+            this.clearIndicators(document);
+            this.applyToDocument(document);
+        }
     }
 
     // Apply space indicators to all elements on the page
-    applyIndicators() {
-        this.clearIndicators();
-        const allElements = document.querySelectorAll('body *:not(.not-calculate)');
+    applyToDocument(doc) {
+      //  this.clearIndicators(doc);
+        this.addIndicatorStyles(doc);
+        const allElements = doc.querySelectorAll('body *:not(.not-calculate)');
 
         allElements.forEach((element) => {
             const computedStyle = window.getComputedStyle(element);
@@ -163,6 +224,7 @@ class SpaceIndicator {
             }
 
             // Apply padding indicators if padding is toggled on
+            console.log("showPadding : ", this.showPadding);
             if (this.showPadding) {
                 this.addPaddingIndicators(element, rect, computedStyle);
             }
