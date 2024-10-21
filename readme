@@ -1,16 +1,3 @@
-We have introduced a new WOF configuration within the package.json file to streamline the assessment process. Some aspects of the assessment are automatically populated behind the scenes, such as the package automatically detecting the React version or the component library, removing the need for manual input by the developer.
+We have introduced a new pull request (PR) template, which is currently implemented in the simple.demo project and integrated into our feature webx CLI project. For new projects, this PR template will be automatically included, streamlining the development process. However, for existing projects, the template will need to be manually added.
 
-However, certain assessments still require manual input from developers. For example, developers will need to add entries in the following format:
-
-json
-复制代码
-"wof": {
-  "squad": "name",
-  "accessibilityRating": "Not rated",
-  "overpass": "no"
-}
-This ensures that key details, like squad ownership and accessibility ratings, are properly documented in the package.json file. By combining automatic and manual assessments, this approach provides a more efficient and accurate way to track WOF data while reducing the burden on developers.
-
-
-
-trim(replace(replace(replace(replace(<your string>, '\r\n', ' '), '\n', ' '), '\r', ' '), '\t', ' '))
+As the pull request template is now a part of the WOF assessment, ensuring that it is implemented across all relevant projects is essential for consistent evaluation and adherence to standards. This will help maintain quality and compliance with the WOF framework.
