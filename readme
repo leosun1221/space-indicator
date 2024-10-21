@@ -1,3 +1,7 @@
-We have introduced a new pull request (PR) template, which is currently implemented in the simple.demo project and integrated into our feature webx CLI project. For new projects, this PR template will be automatically included, streamlining the development process. However, for existing projects, the template will need to be manually added.
+We have introduced a new pull request (PR) template, currently implemented in the simple.demo project and integrated into our feature webx CLI project. For new projects, this PR template will be included automatically. However, for existing projects, the template needs to be added manually, as it is now a required part of the WOF assessment.
 
-As the pull request template is now a part of the WOF assessment, ensuring that it is implemented across all relevant projects is essential for consistent evaluation and adherence to standards. This will help maintain quality and compliance with the WOF framework.
+To add the PR template to your existing project, you have two options:
+
+Manually copy the template folder from the simple.demo project.
+Use the webx CLI command line tool. Please follow the instructions in the webx project documentation (a link will be provided).
+Ensuring that the pull request template is integrated across all projects helps maintain consistent WOF evaluations and ensures adherence to the updated standards.
