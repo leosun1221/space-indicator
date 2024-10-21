@@ -1,7 +1,1 @@
-Given that our company's Elastic data retention is limited to two months, we are exploring an alternative solution for long-term storage of our WOF data by utilizing SharePoint. Our plan is to create a SharePoint list page specifically for managing and storing Feature WOF information.
-
-To make this work, we will trigger an email from Kibana that sends the Feature WOF data to our chapter's email. Using Power Automate, we will create a flow that triggers when the email is received. This flow will extract the WOF information from the email and automatically update the corresponding SharePoint list.
-
-We can further enhance this process by introducing Power Automate's keyword matching functionality. This will allow us to filter and extract only the relevant WOF data for specific features, ensuring we update SharePoint with the most pertinent information.
-
-Additionally, we can post the WOF data to a Microsoft Teams channel or send group messages, ensuring all relevant teams are informed and the data is easily accessible. This approach guarantees efficient data management, collaboration, and a reliable backup outside of Elastic’s limited retention window.
+The new build pipeline introduces a feature that allows you to push WOF data to Kibana without needing to install the Kibana script directly in each feature project. This simplifies the process, as all you need to do is use the shared build pipeline. By leveraging the shared pipeline, WOF data will be automatically sent to Kibana, streamlining the setup and reducing maintenance efforts across projects.
