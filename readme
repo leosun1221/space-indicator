@@ -1,6 +1,7 @@
-We are planning to implement a WOF scoring system that will assess each feature based on its WOF configuration data. The scoring will classify features into three levels:
+We have introduced streamlined pull request (PR) validation steps to ensure the build validation process focuses only on the essential items. The key validation steps now include:
 
-Green – indicating optimal or excellent performance.
-Amber – signifying areas that need attention but are within acceptable limits.
-Red – highlighting critical issues that require immediate action.
-This rating system will provide clear, actionable insights into the health of each feature, making it easier to prioritize improvements and maintain overall project quality.
+npm ci – for installing project dependencies.
+npm run audit – to identify and address security vulnerabilities.
+npm run build – to compile and build the project.
+npm test – to execute unit tests and verify code functionality.
+By refining these steps, we ensure the PR validation build runs efficiently, validating only the necessary components to maintain project quality and minimize overhead.
