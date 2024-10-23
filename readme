@@ -1,1 +1,40 @@
-The new build pipeline introduces a feature that allows you to push WOF data to Kibana without needing to install the Kibana script directly in each feature project. This simplifies the process, as all you need to do is use the shared build pipeline. By leveraging the shared pipeline, WOF data will be automatically sent to Kibana, streamlining the setup and reducing maintenance efforts across projects.
+name: MasterPipeline
+
+trigger: none  # Disable CI trigger for the master pipeline
+
+schedules:
+  - cron: "0 0 * * 0"  # Every Sunday at midnight
+    displayName: Weekly Trigger
+    branches:
+      include:
+        - main  # Adjust to your target branch
+
+jobs:
+  - job: TriggerBuilds
+    displayName: 'Trigger Build Pipelines'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - script: |
+          echo "Triggering Build Pipeline 1..."
+          curl -u :$(System.AccessToken) \
+               -X POST \
+               -H "Content-Type: application/json" \
+               -d '{"definition": {"id": 1}}' \  # Replace with the actual ID of Build Pipeline 1
+               "https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=6.0"
+
+      - script: |
+          echo "Triggering Build Pipeline 2..."
+          curl -u :$(System.AccessToken) \
+               -X POST \
+               -H "Content-Type: application/json" \
+               -d '{"definition": {"id": 2}}' \  # Replace with the actual ID of Build Pipeline 2
+               "https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=6.0"
+
+      - script: |
+          echo "Triggering Build Pipeline 3..."
+          curl -u :$(System.AccessToken) \
+               -X POST \
+               -H "Content-Type: application/json" \
+               -d '{"definition": {"id": 3}}' \  # Replace with the actual ID of Build Pipeline 3
+               "https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=6.0"
